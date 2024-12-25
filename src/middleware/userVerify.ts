@@ -31,6 +31,7 @@ const userVerify = (
             });
             return;
         }
+        next();
     } catch (err: any) {
         res.status(401).json({
             message: 'Invalid or expired token',

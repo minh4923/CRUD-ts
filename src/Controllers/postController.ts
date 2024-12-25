@@ -35,7 +35,7 @@ const getPostById = async (req: Request, res: Response): Promise<void> => {
 
 const createPost = async (req: Request, res: Response): Promise<void> => {
     const data: PostData = req.body;
-    const token = req.headers['authorization']?.split(' ')[1] || '';
+    const token = req.headers['authorization']?.split(' ')[1] || ' ';
     try { 
         const newPost = await postService.createPost(data, token);
         res.status(201).json(newPost);

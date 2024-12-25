@@ -57,7 +57,7 @@ class PostService {
     }
     async createPost(data: { title: string; content: string }, token: string): Promise<IPost | null> {
         if (!token) {
-            throw new Error('Token not require');
+            throw new Error('Token not require.');
         }
         let userId: string;
         try {
@@ -71,8 +71,8 @@ class PostService {
             content: data.content,
             author: userId,
         });
-        await newPost.save();
-        return newPost;
+        const post = await newPost.save();
+        return post;
     }
 
     async updatePost(data: { title?: string; content?: string }, id: string): Promise<IPost | null> {

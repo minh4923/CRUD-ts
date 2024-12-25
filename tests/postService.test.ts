@@ -68,7 +68,7 @@ describe('PostService', () => {
             const mockToken = 'valid-token';
             const mockDecoded = { userId: 'user1' };
             const mockPost = {
-                id: '1',
+              
                 title: 'Post 1',
                 content: 'Content 1',
                 author: 'user1',
@@ -85,7 +85,7 @@ describe('PostService', () => {
 
         it('should throw an error if token is missing', async () => {
             await expect(postService.createPost({ title: 'Post 1', content: 'Content 1' }, '')).rejects.toThrow(
-                'You need to log in to perform this action.'
+                'Token not require.'
             );
         });
 

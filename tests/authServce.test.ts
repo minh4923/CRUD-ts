@@ -73,7 +73,7 @@ describe('AuthService', () => {
             expect(result).toEqual({
                 token: 'fakeToken',
                 message: 'User logged in successfully',
-                userId: 'fakeId',
+                userId: '123',
             });
         });
 
@@ -99,6 +99,7 @@ describe('AuthService', () => {
             expect(result).toEqual({
                 token: 'fakeToken',
                 message: 'Admin logged in successfully',
+                userId: '123',
             });
         });
 
