@@ -45,16 +45,6 @@ class PostService {
         };
     }
 
-    async getPostById(id: string): Promise<IPost | null> {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw new ValidationError('Invalid post Id');
-        }
-        const post = await Post.findById(id);
-        if (!post) {
-            throw new NotFoundError('Post not found');
-        }
-        return post;
-    }
     async createPost(data: { title: string; content: string }, token: string): Promise<IPost | null> {
         if (!token) {
             throw new Error('Token not require.');
@@ -111,6 +101,7 @@ class PostService {
         const skip = (page - 1) * limit;
         const posts = await Post.find({ author: userId }).skip(skip).limit(limit);
         const totalPosts = await Post.countDocuments({ author: userId });
+
         return {
             posts,
             pagination: {

@@ -11,11 +11,7 @@ interface CustomeRequest extends Request {
     userId?: string;
     role?: string;
 }
-const adminVerify = (
-    req: CustomeRequest,
-    res: Response,
-    next: NextFunction
-): void => {
+const adminVerify = (req: CustomeRequest, res: Response, next: NextFunction): void => {
     const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         res.status(403).json({ message: 'Token not required' });
@@ -26,7 +22,7 @@ const adminVerify = (
         req.userId = decoded.userId;
         req.role = decoded.role;
         if (req.role !== 'admin') {
-            res.status(403).json({ message: 'Access denied: Admn only' });
+            res.status(403).json({ message: 'Access denied: Admin only' });
             return;
         }
         next();

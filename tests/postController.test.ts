@@ -1,12 +1,5 @@
 import { Request, Response } from 'express';
-import {
-    getAllPost,
-    getPostById,
-    getUserPosts,
-    createPost,
-    updatePost,
-    deletePost,
-} from '../src/Controllers/postController';
+import { getAllPost, getUserPosts, createPost, updatePost, deletePost } from '../src/Controllers/postController';
 import postService from '../src/services/postService';
 
 jest.mock('../src/services/postService'); // Mock postService
@@ -51,32 +44,6 @@ describe('Post Controller', () => {
 
             expect(mockResponse.status).toHaveBeenCalledWith(500);
             expect(mockResponse.json).toHaveBeenCalledWith({ message: 'Service failed' });
-        });
-    });
-
-    describe('getPostById', () => {
-        it('should return a post when successful', async () => {
-            const mockPost = { id: 1, title: 'Post 1', content: 'Content 1' };
-            (postService.getPostById as jest.Mock).mockResolvedValue(mockPost);
-
-            mockRequest.params = { id: '1' };
-
-            await getPostById(mockRequest as Request, mockResponse as Response);
-
-            expect(postService.getPostById).toHaveBeenCalledWith('1');
-            expect(mockResponse.json).toHaveBeenCalledWith(mockPost);
-        });
-
-        it('should return 404 when post not found', async () => {
-            const mockError = new Error('Post not found');
-            (postService.getPostById as jest.Mock).mockRejectedValue(mockError);
-
-            mockRequest.params = { id: '1' };
-
-            await getPostById(mockRequest as Request, mockResponse as Response);
-
-            expect(mockResponse.status).toHaveBeenCalledWith(404);
-            expect(mockResponse.json).toHaveBeenCalledWith({ message: 'Post not found' });
         });
     });
 

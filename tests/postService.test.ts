@@ -3,8 +3,8 @@ import Post from '../src/models/Post';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-jest.mock('../src/models/Post'); 
-jest.mock('jsonwebtoken'); 
+jest.mock('../src/models/Post');
+jest.mock('jsonwebtoken');
 
 describe('PostService', () => {
     describe('getAllPost', () => {
@@ -35,40 +35,11 @@ describe('PostService', () => {
         });
     });
 
-    describe('getPostById', () => {
-        it('should return a post when valid ID is provided', async () => {
-            const mockPost = { id: '1', title: 'Post 1', content: 'Content 1' };
-
-            jest.spyOn(mongoose.Types.ObjectId, 'isValid').mockReturnValue(true);
-            (Post.findById as jest.Mock).mockResolvedValue(mockPost);
-
-            const result = await postService.getPostById('1');
-
-            expect(mongoose.Types.ObjectId.isValid).toHaveBeenCalledWith('1');
-            expect(Post.findById).toHaveBeenCalledWith('1');
-            expect(result).toEqual(mockPost);
-        });
-
-        it('should throw a ValidationError for invalid ID', async () => {
-            jest.spyOn(mongoose.Types.ObjectId, 'isValid').mockReturnValue(false);
-
-            await expect(postService.getPostById('invalid-id')).rejects.toThrow('Invalid post Id');
-        });
-
-        it('should throw a NotFoundError if the post is not found', async () => {
-            jest.spyOn(mongoose.Types.ObjectId, 'isValid').mockReturnValue(true);
-            (Post.findById as jest.Mock).mockResolvedValue(null);
-
-            await expect(postService.getPostById('1')).rejects.toThrow('Post not found');
-        });
-    });
-
     describe('createPost', () => {
         it('should create a new post when token is valid', async () => {
             const mockToken = 'valid-token';
             const mockDecoded = { userId: 'user1' };
             const mockPost = {
-              
                 title: 'Post 1',
                 content: 'Content 1',
                 author: 'user1',

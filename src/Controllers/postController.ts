@@ -23,20 +23,10 @@ const getAllPost = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-const getPostById = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-    try {
-        const post = await postService.getPostById(id);
-        res.json(post);
-    } catch (err: any) {
-        res.status(404).json({ message: err.message });
-    }
-};
-
 const createPost = async (req: Request, res: Response): Promise<void> => {
     const data: PostData = req.body;
     const token = req.headers['authorization']?.split(' ')[1] || ' ';
-    try { 
+    try {
         const newPost = await postService.createPost(data, token);
         res.status(201).json(newPost);
     } catch (err: any) {
@@ -67,25 +57,14 @@ const deletePost = async (req: Request, res: Response): Promise<void> => {
 
 const getUserPosts = async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.params;
-    const { page = '1', limit = '1' }: QueryParams = req.query || '';
+    const { page = '1', limit = '10' }: QueryParams = req.query || '';
     const parsedPage = parseInt(page, 10) || 1;
-    const parsedLimit = parseInt(limit, 10) || 1;
+    const parsedLimit = parseInt(limit, 10) || 10;
     try {
-        const userPosts = await postService.getUserPosts(
-            userId,
-            parsedPage,
-            parsedLimit
-        );
+        const userPosts = await postService.getUserPosts(userId, parsedPage, parsedLimit);
         res.status(200).json(userPosts);
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
 };
-export {
-    getAllPost,
-    getPostById,
-    getUserPosts,
-    createPost,
-    updatePost,
-    deletePost,
-};
+export { getAllPost, getUserPosts, createPost, updatePost, deletePost };

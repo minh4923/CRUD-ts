@@ -11,11 +11,7 @@ interface CustomRequest extends Request {
     userId?: string;
     role?: string;
 }
-const postVerify = async (
-    req: CustomRequest,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
+const postVerify = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
     const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         res.status(403).json({ message: 'Token not required' });
