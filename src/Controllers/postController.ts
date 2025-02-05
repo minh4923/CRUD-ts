@@ -1,15 +1,8 @@
 import { Request, Response } from 'express';
 import postService from '../services/postService';
+import { QueryParams } from '../interfaces/QueryParams';
+import { PostData } from '../interfaces/PostData';
 
-interface QueryParams {
-    page?: string;
-    limit?: string;
-}
-
-interface PostData {
-    title: string;
-    content: string;
-}
 
 const getAllPost = async (req: Request, res: Response): Promise<void> => {
     const { page = '1', limit = '10' }: QueryParams = req.query;

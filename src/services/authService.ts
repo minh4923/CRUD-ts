@@ -2,19 +2,10 @@ import User, { IUser } from '../models/User';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { error } from 'console';
-const secret = process.env.JWT_SEC || 'aaa';
-
-interface RegisterParams {
-    name: string;
-    email: string;
-    password: string;
-}
-
-interface LoginParams {
-    email: string;
-    password: string;
-}
-
+import { LoginParams } from '../interfaces/LoginParams';
+import { RegisterParams } from '../interfaces/ResgisterParams';
+import { validatedEnv } from '../config/validateEnv';
+const secret = validatedEnv.JWT_SECRET;
 class AuthService {
     async register({ name, email, password }: RegisterParams): Promise<{ message: string }> {
         const existingUser = (await User.findOne({ email })) as IUser | null;
@@ -28,7 +19,7 @@ class AuthService {
         return { message: 'Registered successfully!' };
     }
 
-    async login({ email, password }: LoginParams): Promise<{ token: string; message: string; userId: string }> {
+    async login({ email, password }: LoginParams): Promise<{ token: string; userId: string }> {
         const user = (await User.findOne({ email })) as IUser | null;
         if (!user) {
             throw new Error('User not exist');
@@ -44,11 +35,11 @@ class AuthService {
                 role: user.role,
             },
             secret,
-            { expiresIn: '10m' }
+            { expiresIn: validatedEnv.JWT_EXPIRES_IN }
         );
         const userId: string = user.id;
-        const message = user.role === 'admin' ? 'Admin logged in successfully' : 'User logged in successfully';
-        return { token, message, userId };
+        
+        return { token, userId };
     }
 }
 

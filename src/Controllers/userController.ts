@@ -1,15 +1,7 @@
 import e, { Request, Response, NextFunction } from 'express';
 import userService from '../services/userService';
-
-interface QueryParams {
-    page?: string;
-    limit?: string;
-}
-
-interface UserData {
-    name: string;
-    password: string;
-}
+import { QueryParams } from '../interfaces/QueryParams';
+import { UserData } from '../interfaces/UserData';  
 
 const getAllUsers = async (req: Request, res: Response): Promise<void> => {
     const { page = '1', limit = '10' }: QueryParams = req.query;

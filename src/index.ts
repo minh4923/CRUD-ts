@@ -1,23 +1,21 @@
+import './config/env'
 import express from 'express';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import createAdmin from './scripts/createAdmin';
 import userRoutes from './routes/userRoutes';
 import postRoutes from './routes/postRoutes';
 import authRoutes from './routes/authRoutes';
-dotenv.config();
-const MongoDB = process.env.MONGODB_URI;
+import { validatedEnv } from './config/validateEnv';
 const app = express();
 app.use(express.json());
 
 mongoose
-    .connect(process.env.MONGODB_URI as string)
+    .connect(validatedEnv.MONGODB_URI)
     .then(() => {
         console.log('Connected to MongoDB');
         createAdmin();
     })
     .catch((err) => {
-        console.log(process.env.MONGODB_URI);
         console.error('MongoDB connection error: ', err);
     });
 
@@ -27,7 +25,7 @@ app.get('/', (req, res) => {
 app.use('/api', userRoutes);
 app.use('/api', postRoutes);
 app.use('/api', authRoutes);
-const PORT = process.env.PORT || 3000;
+const PORT = validatedEnv.PORT;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${validatedEnv.PORT}`);
 });

@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-
-const secret: string = process.env.JWT_SEC || 'aaa';
+import {validatedEnv} from '../config/validateEnv';
+const secret = validatedEnv.JWT_SECRET;
 interface DecodedToken {
     userId: string;
     role: string;

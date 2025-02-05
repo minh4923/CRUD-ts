@@ -2,31 +2,12 @@ import { error } from 'console';
 import Post, { IPost } from '../models/Post';
 import mongoose, { skipMiddlewareFunction } from 'mongoose';
 import jwt from 'jsonwebtoken';
-const secret = process.env.JWT_SEC || 'aaa';
-interface Pagination {
-    total: number;
-    page: number;
-    limit: number;
-    totalPage: number;
-}
+import { Pagination } from '../interfaces/Paginations';
+import { ValidationError } from '../Errors/ValidationError';
+import { NotFoundError } from '../Errors/NotFoundError';
+import { validatedEnv } from '../config/validateEnv';
 
-class ValidationError extends Error {
-    statusCode: number;
-    constructor(message: string) {
-        super(message);
-        this.name = 'ValidationError';
-        this.statusCode = 400;
-    }
-}
-
-class NotFoundError extends Error {
-    statusCode: number;
-    constructor(message: string) {
-        super(message);
-        this.name = 'NotFoundError';
-        this.statusCode = 404;
-    }
-}
+const secret = validatedEnv.JWT_SECRET;
 
 class PostService {
     async getAllPost(page: number = 1, limit: number = 10): Promise<{ posts: IPost[]; pagination: Pagination }> {

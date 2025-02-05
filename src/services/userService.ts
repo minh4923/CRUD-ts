@@ -1,30 +1,8 @@
 import User, { IUser } from '../models/User'; 
 import mongoose  from 'mongoose';
-
-interface Pagination{
-    total: number;
-    page: number;
-    limit: number;
-    totalPage: number;
-}
-
-class NotFoundError extends Error {
-    statusCode: number;
-    constructor(message: string){
-        super(message);
-        this.name = 'NotFoundError';    
-        this.statusCode = 404;
-    }
-}
-
-class ValidationError extends Error{
-    statusCode: number;
-    constructor(message: string){
-        super(message);
-        this.name = 'ValidationError';
-        this.statusCode =  400;
-    }
-}
+import { Pagination } from '../interfaces/Paginations';
+import { ValidationError } from '../Errors/ValidationError';
+import { NotFoundError } from '../Errors/NotFoundError';
 
 class UserService {
     async getAllUsers(page: number = 1, limit: number = 1): Promise<{users: IUser[], pagination: Pagination}>{
