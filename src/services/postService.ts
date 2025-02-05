@@ -5,9 +5,7 @@ import jwt from 'jsonwebtoken';
 import { Pagination } from '../interfaces/Paginations';
 import { ValidationError } from '../Errors/ValidationError';
 import { NotFoundError } from '../Errors/NotFoundError';
-import { validatedEnv } from '../config/validateEnv';
-
-const secret = validatedEnv.JWT_SECRET;
+import { EnvConfig } from '../config/envConfig';
 
 class PostService {
     async getAllPost(page: number = 1, limit: number = 10): Promise<{ posts: IPost[]; pagination: Pagination }> {
@@ -32,7 +30,7 @@ class PostService {
         }
         let userId: string;
         try {
-            const decoded = jwt.verify(token, secret) as { userId: string };
+            const decoded = jwt.verify(token, EnvConfig.JWT_SECRET) as { userId: string };
             userId = decoded.userId;
         } catch (error) {
             throw new Error('Invalid or expired token');

@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import {validatedEnv} from '../config/validateEnv';
-const secret = validatedEnv.JWT_SECRET;
+import { EnvConfig}  from '../config/envConfig';
 interface DecodedToken {
     userId: string;
     role: string;
@@ -22,7 +21,7 @@ const userVerify = (
     }
 
     try {
-        const decoded = jwt.verify(token, secret) as DecodedToken;
+        const decoded = jwt.verify(token, EnvConfig.JWT_SECRET) as DecodedToken;
         req.userId = decoded.userId;
         req.role = decoded.role;
         if (!req.userId) {

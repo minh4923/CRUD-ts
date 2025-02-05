@@ -5,12 +5,12 @@ import createAdmin from './scripts/createAdmin';
 import userRoutes from './routes/userRoutes';
 import postRoutes from './routes/postRoutes';
 import authRoutes from './routes/authRoutes';
-import { validatedEnv } from './config/validateEnv';
+import {EnvConfig} from './config/envConfig';
 const app = express();
 app.use(express.json());
 
 mongoose
-    .connect(validatedEnv.MONGODB_URI)
+    .connect(EnvConfig.MONGODB_URI)
     .then(() => {
         console.log('Connected to MongoDB');
         createAdmin();
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.use('/api', userRoutes);
 app.use('/api', postRoutes);
 app.use('/api', authRoutes);
-const PORT = validatedEnv.PORT;
+const PORT = EnvConfig.PORT;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${validatedEnv.PORT}`);
+    console.log(`Server running on port ${EnvConfig.PORT}`);
 });

@@ -4,8 +4,8 @@ import bcrypt from 'bcryptjs';
 import { error } from 'console';
 import { LoginParams } from '../interfaces/LoginParams';
 import { RegisterParams } from '../interfaces/ResgisterParams';
-import { validatedEnv } from '../config/validateEnv';
-const secret = validatedEnv.JWT_SECRET;
+import{ EnvConfig } from '../config/envConfig';  
+
 class AuthService {
     async register({ name, email, password }: RegisterParams): Promise<{ message: string }> {
         const existingUser = (await User.findOne({ email })) as IUser | null;
@@ -34,8 +34,8 @@ class AuthService {
                 userId: user.id,
                 role: user.role,
             },
-            secret,
-            { expiresIn: validatedEnv.JWT_EXPIRES_IN }
+            EnvConfig.JWT_SECRET,
+            { expiresIn: EnvConfig.JWT_EXPIRES_IN }
         );
         const userId: string = user.id;
         

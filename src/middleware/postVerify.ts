@@ -2,8 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction } from 'express';
 import Post from '../models/Post';
 import { error } from 'console';
-import { validatedEnv } from '../config/validateEnv';
-const secret = validatedEnv.JWT_SECRET;
+import { EnvConfig } from '../config/envConfig';
 interface DecodedToken {
     userId: string;
     role: string;
@@ -19,7 +18,7 @@ const postVerify = async (req: CustomRequest, res: Response, next: NextFunction)
         return;
     }
     try {
-        const decoded = jwt.verify(token, secret) as DecodedToken;
+        const decoded = jwt.verify(token, EnvConfig.JWT_SECRET) as DecodedToken;
         req.userId = decoded.userId;
         req.role = decoded.role;
         if (req.role !== 'admin' && req.role !== 'user') {
