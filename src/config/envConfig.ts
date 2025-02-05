@@ -1,5 +1,5 @@
 import { validatedEnv } from './validateEnv';
-
+ 
 export const EnvConfig = {
     PORT: validatedEnv.PORT,
     JWT_SECRET: validatedEnv.JWT_SECRET,
